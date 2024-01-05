@@ -1,5 +1,13 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+
+import { getAuth, 
+        signInWithPopup, 
+        GoogleAuthProvider, 
+        createUserWithEmailAndPassword, 
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged } from 'firebase/auth'
+
 import { getFirestore, doc, setDoc, getDoc  } from 'firebase/firestore' 
 // import { credentialsFormatter } from '../../helperFunctions/credentialsFormatter'
 
@@ -65,3 +73,14 @@ export const signInAuthUserEmailAndPassword = async (email, password) => {
     }
     return await signInWithEmailAndPassword(auth, email, password)
 }
+export const signOutUser = async () => await signOut(auth)
+
+/* 
+    Observable Listner for Auth states.
+    like Sign in state or sign out state.
+    This Function will help maintaining all the Auth system in one place 
+    instead of using Above methods in different places
+    
+*/
+
+export const onAuthObservableListener = (callback) => onAuthStateChanged(auth, callback)

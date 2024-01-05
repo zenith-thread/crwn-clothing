@@ -1,6 +1,5 @@
 import './SignIn.styles.scss'
 
-import { Fragment } from 'react'
 import SignUpForm from '../../components/Sign-Up-Form/Sign-Up-Form.component'
 import SignInForm from '../../components/Sign-In-Form/Sign-In-Form.component'
 

@@ -1,8 +1,16 @@
+/*
+==========================
+    SIGN IN FORM WITH 
+    EMAIL AND PASSWORD
+            &
+    SING IN WITH GOOGLE
+==========================
+*/
 import './Sign-In-Form.styles.scss'
 
 import { useState } from "react";
 import { signInAuthUserEmailAndPassword } from '../../utils/firebase/firebase.utils'
-import { signInWithGooglePopUp, createUserDocumentFromGoogleAuth } from "../../utils/firebase/firebase.utils";
+import { signInWithGooglePopUp } from "../../utils/firebase/firebase.utils";
 
 import FormInput from '../Form-inputs/form-inputs.component'
 import Button from '../Button/Button.component'
@@ -15,21 +23,23 @@ const defaultFormFields = {
 
 const SignInForm = () => {
 
+    //Getting Input Values from the form fields
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { email, password } = formFields
 
+    //Setting Input Values 
     const handleChange = (e) => {
         const {name, value} = e.target
 
         setFormFields({...formFields, [name]: value})
     }
 
+    //Signing In With Email and Password
     const submitHandler = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await signInAuthUserEmailAndPassword(email, password)
-            console.log(response)    
+            const {user} = await signInAuthUserEmailAndPassword(email, password)
         }catch(e) {
             if(e.code === 'auth/invalid-credential') {
                 alert('Invalid Email or password')
@@ -38,12 +48,21 @@ const SignInForm = () => {
             }
         }
     }
+
+    //Sigin with Google Auth
     const logGoogleUser = async () => {
     
         try{
             const {user} = await signInWithGooglePopUp()
-            const userDocRef = await createUserDocumentFromGoogleAuth(user)
-        } catch(e) {}
+        } catch(e) {
+            switch(e) {
+                case 'auth/network-request-failed':
+                    alert("Network Error: Try Signing in again")
+                    break
+                default:
+                    alert(e.message)
+            }
+        }
         
     }
 

@@ -1,7 +1,16 @@
-import { useState } from "react";
-import { createAuthUserEmailAndPassword, createUserDocumentFromGoogleAuth } from '../../utils/firebase/firebase.utils'
-import FormInput from '../../components/Form-inputs/form-inputs.component'
+/*
+==========================
+    SIGN UP FORM WITH 
+    EMAIL AND PASSWORD
+==========================
+*/
+
 import './Sign-Up-Form.styles.scss'
+
+import { useState, useContext } from "react";
+import { createAuthUserEmailAndPassword, createUserDocumentFromGoogleAuth } from '../../utils/firebase/firebase.utils'
+
+import FormInput from '../../components/Form-inputs/form-inputs.component'
 import Button from '../../components/Button/Button.component'
 
 const defaultFormFields = {
@@ -13,15 +22,18 @@ const defaultFormFields = {
 
 const SignUpForm = () => {
 
+    //Getting Input Values from the form fields
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { displayName, email, password, confirmPassword } = formFields
 
+    //Setting the Input values
     const handleChange = (e) => {
         const {name, value} = e.target
 
         setFormFields({...formFields, [name]: value})
     }
 
+    //Creating / Signing in the User from the Google Auth
     const submitHandler = async (e) => {
         e.preventDefault();
 
@@ -30,8 +42,8 @@ const SignUpForm = () => {
             return;
         }
         try {
-            const response = await createAuthUserEmailAndPassword(email, password)
-            const userDocRef = await createUserDocumentFromGoogleAuth(response.user, { displayName }) 
+            const {user} = await createAuthUserEmailAndPassword(email, password)
+            const userDocRef = await createUserDocumentFromGoogleAuth(user, { displayName }) 
         } catch(e) {
             if(e.code === 'auth/email-already-in-use') {
                 alert("Email already in Use!")
