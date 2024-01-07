@@ -19,7 +19,7 @@ const Navigation = () => {
     //leverageing UserContext 
     const { currentUser } = useContext(UserContext)
     const { isCartOpen } = useContext(CartContext)
-    
+
     return(
       <Fragment>
         <div className="nav-bar">
