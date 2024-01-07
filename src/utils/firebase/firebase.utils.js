@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 
+//FOLLOWING IMPORTS WERE DONE FOR CREATING AND SIGNING IN THE USERS IN THE FIRESTORE
 import { getAuth, 
         signInWithPopup, 
         GoogleAuthProvider, 
@@ -8,8 +9,14 @@ import { getAuth,
         signOut,
         onAuthStateChanged } from 'firebase/auth'
 
-import { getFirestore, doc, setDoc, getDoc  } from 'firebase/firestore' 
+import { getFirestore, doc, setDoc, getDoc, query  } from 'firebase/firestore' 
 // import { credentialsFormatter } from '../../helperFunctions/credentialsFormatter'
+
+
+// FOLLOWING IMPORTS ARE DONE FOR CREATING COLLECTIONS AND DOCUMENTS OF PRODUCTS IN THE FIRESTORE
+
+import { collection, writeBatch, getDocs } from 'firebase/firestore'
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBVfjZkBDh8gRbz238N7NBoKAVW5ddVkIU",
@@ -84,3 +91,37 @@ export const signOutUser = async () => await signOut(auth)
 */
 
 export const onAuthObservableListener = (callback) => onAuthStateChanged(auth, callback)
+
+/* 
+
+    TRANSACTIONS FOR CREATING COLLECTIONS AND WRITING DOCUMENTS IN THE FIRESTORE DATABASE
+    
+*/
+
+export const addCollectionAndDocument = async  (collectionKey, documentsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db)
+
+    documentsToAdd.forEach(object => {
+        const docRef = doc(collectionRef, object.title.toLowerCase())
+        batch.set(docRef, object)
+    });
+
+    await batch.commit();
+    console.log("done!")
+}
+
+// Getting All the documents' data from the collection 
+
+export const getCategoryAndDocuments = async () => {
+    const collectionRef = collection(db, "categories")
+    const q = query(collectionRef)
+    const querySnapshot = await getDocs(q)
+    
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const {title, items} = docSnapshot.data()
+        acc[title.toLowerCase()] = items
+        return acc
+    }, {})
+    return categoryMap
+}
