@@ -1,13 +1,16 @@
 import { createContext, useState, useEffect } from "react";
 import { onAuthObservableListener, createUserDocumentFromGoogleAuth } from '../utils/firebase/firebase.utils'
 
-//Storage / context
 
+// USER CONTEXT  
+
+//Storage / Context
 export const UserContext = createContext({
     currentUser: null,
     setCurrentUser: () => null
 }) 
 
+// User Context Provider 
 export const UserProvider = ({children}) => {
  
     const [currentUser, setCurrentUser] = useState(null)
