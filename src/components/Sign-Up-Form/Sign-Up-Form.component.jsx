@@ -5,7 +5,7 @@
 ==========================
 */
 
-import './Sign-Up-Form.styles.scss'
+import { SignUpFormStyles } from './Sign-Up-Form.styles.jsx'
 
 import { useState, useContext } from "react";
 import { createAuthUserEmailAndPassword, createUserDocumentFromGoogleAuth } from '../../utils/firebase/firebase.utils'
@@ -54,7 +54,7 @@ const SignUpForm = () => {
     }
 
     return (
-        <div className="sign-up-form">
+        <SignUpFormStyles>
             <h2>Dont have an account?</h2>
             <span>Sign up with your Email and Password</span>
             <form onSubmit={submitHandler}>
@@ -64,7 +64,7 @@ const SignUpForm = () => {
                 <FormInput label='Confirm Password' type="password" required onChange={handleChange} name="confirmPassword" value={confirmPassword}/>
                 <Button type="submit">Sign Up</Button>
             </form>
-        </div>
+        </SignUpFormStyles>
     )
 
 }

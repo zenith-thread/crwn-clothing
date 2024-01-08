@@ -1,14 +1,14 @@
-import './SignIn.styles.scss'
+import { SignInPage } from './SignIn.styles'
 
 import SignUpForm from '../../components/Sign-Up-Form/Sign-Up-Form.component'
 import SignInForm from '../../components/Sign-In-Form/Sign-In-Form.component'
 
 const SignIn = () => {
     return (
-        <div className='sign-in-page'>
+        <SignInPage>
             <SignInForm />
             <SignUpForm />
-        </div>
+        </SignInPage>
     )
 }
 

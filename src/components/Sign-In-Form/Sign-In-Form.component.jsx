@@ -6,14 +6,14 @@
     SING IN WITH GOOGLE
 ==========================
 */
-import './Sign-In-Form.styles.scss'
+import { SignInFormStyles, SignInFormButtons } from './Sign-In-Form.styles.jsx'
 
 import { useState } from "react";
 import { signInAuthUserEmailAndPassword } from '../../utils/firebase/firebase.utils'
 import { signInWithGooglePopUp } from "../../utils/firebase/firebase.utils";
 
 import FormInput from '../Form-inputs/form-inputs.component'
-import Button from '../Button/Button.component'
+import Button, { BUTTON_TYPE_CLASSES } from '../Button/Button.component'
 
 
 const defaultFormFields = {
@@ -67,18 +67,18 @@ const SignInForm = () => {
     }
 
     return (
-        <div className="sign-in-form">
+        <SignInFormStyles>
             <h2>I already have an account</h2>
             <span>Sign In with your Email and Password</span>
             <form onSubmit={submitHandler}>
                 <FormInput label='Email' type="email" required onChange={handleChange} name="email" value={email}/>
                 <FormInput label='Password' type="password" required onChange={handleChange} name="password" value={password}/>
-                <div className='signIn-form-buttons'>
+                <SignInFormButtons>
                     <Button type="submit">Sign In</Button>
-                    <Button type="button" buttonType='google' onClick={logGoogleUser}>Google Sign In</Button>
-                </div>
+                    <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={logGoogleUser}>Google Sign In</Button>
+                </SignInFormButtons>
             </form>
-        </div>
+        </SignInFormStyles>
     )
 
 }
