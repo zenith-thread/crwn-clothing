@@ -41,10 +41,16 @@ const SignInForm = () => {
         try {
             const {user} = await signInAuthUserEmailAndPassword(email, password)
         }catch(e) {
-            if(e.code === 'auth/invalid-credential') {
-                alert('Invalid Email or password')
-            } else {
-                console.log(e)
+            switch (e.code) {
+                case 'auth/invalid-credential':
+                    alert('Invalid Email or password')
+                    break;
+                case 'auth/network-request-failed':
+                    alert('Network Error: Check your internet connection or Try Signing in again')
+                    break;
+                default:
+                    console.log(e)
+                    break;
             }
         }
     }
@@ -55,12 +61,19 @@ const SignInForm = () => {
         try{
             const {user} = await signInWithGooglePopUp()
         } catch(e) {
-            switch(e) {
+            switch (e.code) {
+                case 'auth/invalid-credential':
+                    alert('Invalid Email or password')
+                    break;
                 case 'auth/network-request-failed':
-                    alert("Network Error: Try Signing in again")
-                    break
+                    alert('Network Error: Check your internet connection or Try Signing in again')
+                    break;
+                case "auth/internal-error": 
+                    alert('Network Error: Check your internet connection or Try Signing in again')
+                    break;
                 default:
-                    alert(e.message)
+                    console.log(e)
+                    break;
             }
         }
         

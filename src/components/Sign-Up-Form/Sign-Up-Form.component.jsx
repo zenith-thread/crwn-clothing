@@ -45,10 +45,18 @@ const SignUpForm = () => {
             const {user} = await createAuthUserEmailAndPassword(email, password)
             const userDocRef = await createUserDocumentFromGoogleAuth(user, { displayName }) 
         } catch(e) {
-            if(e.code === 'auth/email-already-in-use') {
-                alert("Email already in Use!")
-            } else {
-                console.log(e)
+            switch (e.code) {
+                case 'auth/email-already-in-use': 
+                    alert("Email already in Use!")
+                case 'auth/invalid-credential':
+                    alert('Invalid Email or password')
+                    break;
+                case 'auth/network-request-failed':
+                    alert('Network Error: Check your internet connection or Try Signing in again')
+                    break;
+                default:
+                    console.log(e)
+                    break;
             }
         }
     }
